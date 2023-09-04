@@ -25,7 +25,7 @@ noticias_enviadas = set()
 
 # Función para obtener las noticias
 def obtener_noticias():
-    url = "https://www.millenium.gg/tag/tag-9"
+    url = "https://www.millenium.gg/juegos/juego-78/noticias"
 
     # Realizar una solicitud HTTP para obtener el contenido de la página
     response = requests.get(url)
@@ -34,15 +34,16 @@ def obtener_noticias():
         soup = BeautifulSoup(response.text, "html.parser")
 
         # Encuentra todas las etiquetas <article> que contienen noticias
-        articulos = soup.find_all("article", class_="c-article")
+        articulos = soup.find_all("article")
 
         # Revertir la lista de artículos para mostrar las noticias más recientes al principio
         articulos.reverse()
 
         noticias = []
         for article in articulos:
+
             # Encontrar la etiqueta <a> dentro de <article> que contiene el título y la URL
-            enlace = article.find("a")
+            enlace = article.find("a", class_="c-article__link")
 
             # Verificar si se encontró la etiqueta <a>
             if enlace is not None:
@@ -54,12 +55,9 @@ def obtener_noticias():
 
                 # Verificar si la URL de la noticia contiene "/tag/"
                 if "/tag/" not in url_noticia:
-                    # Encontrar la etiqueta <img> para obtener la URL de la imagen en miniatura
-                    imagen_miniatura = article.find("img")["src"]
 
                     # Agregar el título, la URL de la noticia y la URL de la imagen a la lista de noticias
-                    noticias.append({"titulo": titulo, "url_noticia": url_noticia, "imagen_miniatura": imagen_miniatura})
-
+                    noticias.append({"titulo": titulo, "url_noticia": url_noticia})
         return noticias
     else:
         return None
@@ -75,7 +73,7 @@ async def valorant_news(ctx):
             # Comprobar si la noticia ya fue enviada
             if noticia['url_noticia'] not in noticias_enviadas:
                 # Construye el mensaje con el título, el vínculo y la miniatura de la noticia
-                mensaje = f"**Título:** {noticia['titulo']}\n**Enlace:** {noticia['url_noticia']}\n**Miniatura:** {noticia['imagen_miniatura']}"
+                mensaje = f"**Título:** {noticia['titulo']}\n**Enlace:** {noticia['url_noticia']}"
 
                 # Envía el mensaje en Discord
                 await ctx.send(mensaje)
@@ -89,7 +87,7 @@ async def valorant_news(ctx):
 @tasks.loop(minutes=15)
 async def enviar_noticias():
     noticias = obtener_noticias()
-    canal_id = 1148186168509341786 # Reemplaza con la ID del canal
+    canal_id = 1148220610468651112 # Reemplaza con la ID del canal
     canal = bot.get_channel(canal_id)
 
     if noticias and canal:
