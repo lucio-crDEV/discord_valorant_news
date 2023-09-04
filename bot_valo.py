@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
 from urllib.parse import urljoin
-import asyncio
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
