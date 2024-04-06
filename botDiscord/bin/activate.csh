@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/home/liu/workspace/bot/botValo"
+setenv VIRTUAL_ENV "/home/d4k/Workspace/python/discord_valorant_news/botDiscord"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"
@@ -17,8 +17,8 @@ setenv PATH "$VIRTUAL_ENV/bin:$PATH"
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
 if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    set prompt = "(botValo) $prompt"
-    setenv VIRTUAL_ENV_PROMPT "(botValo) "
+    set prompt = "(botDiscord) $prompt"
+    setenv VIRTUAL_ENV_PROMPT "(botDiscord) "
 endif
 
 alias pydoc python -m pydoc

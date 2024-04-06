@@ -1,4 +1,4 @@
-#!/home/liu/workspace/bot/botValo/bin/python
+#!/home/d4k/Workspace/python/discord_valorant_news/botDiscord/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

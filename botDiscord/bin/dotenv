@@ -1,8 +1,8 @@
-#!/home/liu/workspace/bot/botValo/bin/python
+#!/home/d4k/Workspace/python/discord_valorant_news/botDiscord/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
-from charset_normalizer.cli.normalizer import cli_detect
+from dotenv.cli import cli
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    sys.exit(cli_detect())
+    sys.exit(cli())

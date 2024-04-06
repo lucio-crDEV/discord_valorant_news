@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/liu/workspace/bot/botValo"
+VIRTUAL_ENV="/home/d4k/Workspace/python/discord_valorant_news/botDiscord"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
@@ -55,9 +55,9 @@ fi
 
 if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
     _OLD_VIRTUAL_PS1="${PS1:-}"
-    PS1="(botValo) ${PS1:-}"
+    PS1="(botDiscord) ${PS1:-}"
     export PS1
-    VIRTUAL_ENV_PROMPT="(botValo) "
+    VIRTUAL_ENV_PROMPT="(botDiscord) "
     export VIRTUAL_ENV_PROMPT
 fi
 
