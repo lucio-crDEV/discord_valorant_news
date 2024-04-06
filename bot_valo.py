@@ -6,28 +6,23 @@ import os
 from dotenv import load_dotenv
 from urllib.parse import urljoin
 
-# Cargar variables de entorno desde el archivo .env
-load_dotenv()
-
-# Configurar las intenciones del bot de Discord
-intents = discord.Intents.default()
-intents.typing = False
-intents.presences = False
+# Cargar variables de entorno desde el archivo config.env
+load_dotenv("config.env")
 
 # Configurar el bot de Discord con las intenciones
-bot_token = os.getenv("DISCORD_TOKEN")
-bot_prefix = "!"  # El prefijo que activará los comandos del bot
-bot = commands.Bot(command_prefix=bot_prefix, intents=intents)
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# URL de las noticias obtenida del archivo config.env
+url_news = os.getenv("URL_NEWS")
 
 # Lista para almacenar las noticias ya enviadas
 noticias_enviadas = set()
 
 # Función para obtener las noticias
 def obtener_noticias():
-    url = "https://www.millenium.gg/juegos/juego-78/noticias"
-
     # Realizar una solicitud HTTP para obtener el contenido de la página
-    response = requests.get(url)
+    response = requests.get(url_news)
     if response.status_code == 200:
         # Analizar el contenido HTML de la página con BeautifulSoup
         soup = BeautifulSoup(response.text, "html.parser")
@@ -40,7 +35,6 @@ def obtener_noticias():
 
         noticias = []
         for article in articulos:
-
             # Encontrar la etiqueta <a> dentro de <article> que contiene el título y la URL
             enlace = article.find("a", class_="c-article__link")
 
@@ -50,11 +44,10 @@ def obtener_noticias():
                 titulo = enlace.text.strip()
 
                 # Obtener la URL del enlace (puede ser relativa, así que construye la URL completa)
-                url_noticia = urljoin(url, enlace["href"])
+                url_noticia = urljoin(url_news, enlace["href"])
 
                 # Verificar si la URL de la noticia contiene "/tag/"
                 if "/tag/" not in url_noticia:
-
                     # Agregar el título, la URL de la noticia y la URL de la imagen a la lista de noticias
                     noticias.append({"titulo": titulo, "url_noticia": url_noticia})
         return noticias
@@ -86,8 +79,8 @@ async def valorant_news(ctx):
 @tasks.loop(minutes=15)
 async def enviar_noticias():
     noticias = obtener_noticias()
-    canal_id = 1148220610468651112 # Reemplaza con la ID del canal
-    canal = bot.get_channel(canal_id)
+    canal_id = os.getenv("CANAL_ID")  # ID del canal donde se enviarán las noticias
+    canal = bot.get_channel(int(canal_id))
 
     if noticias and canal:
         for noticia in noticias:
@@ -99,10 +92,44 @@ async def enviar_noticias():
                 # Agrega la URL de la noticia a la lista de noticias enviadas
                 noticias_enviadas.add(noticia['url_noticia'])
 
+# Comando para obtener las últimas noticias
+@bot.command(name='actualizar')
+async def actualizar_noticias(ctx):
+    nuevas_noticias = obtener_noticias()
+    
+    if nuevas_noticias:
+        # Verificar si hay nuevas noticias desde la última vez que se verificaron
+        nuevas_noticias = [noticia for noticia in nuevas_noticias if noticia['url_noticia'] not in noticias_enviadas]
+        
+        if nuevas_noticias:
+            # Enviar las nuevas noticias como mensajes en Discord
+            for noticia in nuevas_noticias:
+                mensaje = f"**Título:** {noticia['titulo']}\n**Enlace:** {noticia['url_noticia']}"
+                await ctx.send(mensaje)
+
+                # Agregar la URL de la noticia a la lista de noticias enviadas
+                noticias_enviadas.add(noticia['url_noticia'])
+                
+            return
+    await ctx.send("Las noticias están actualizadas.")
+    
+    
 # Iniciar el bot de Discord
 @bot.event
 async def on_ready():
     print(f'Bot conectado como {bot.user.name}')
-    enviar_noticias.start()  # Inicia el bucle para enviar noticias automáticamente
+    print(f'Conectado a {len(bot.guilds)} servidores')
+    
+    # Obtener el objeto de canal
+    canal_id = os.getenv("CANAL_ID")  # ID del canal donde se enviarán las noticias
+    canal = bot.get_channel(int(canal_id))
+    
+    # Verificar si el canal se encontró
+    if canal:
+        print(f'Conectado al canal: {canal.name} (ID: {canal.id})')
+        # Inicia el bucle para enviar noticias automáticamente
+        enviar_noticias.start()
+    else:
+        print('El bot no se encontró en el servidor del canal especificado.')
 
-bot.run(bot_token)
+bot.run(os.getenv("DISCORD_BOT_TOKEN"))
