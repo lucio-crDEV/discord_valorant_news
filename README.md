@@ -67,7 +67,3 @@ Para instalar y ejecutar este bot localmente, sigue estos pasos:
 Para invitar al bot a tu servidor de Discord, utiliza el siguiente enlace:
 
 [Invitar al bot a tu servidor](https://discord.com/oauth2/authorize?client_id=1147753137877307433)
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
