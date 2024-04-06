@@ -25,18 +25,18 @@ Para instalar y ejecutar este bot localmente, sigue estos pasos:
 
 3. Crea un entorno virtual (opcional pero recomendado):
 
- ```python3 -m venv venv```
+ ```python3 -m venv nombre_del_entorno_virtual```
 
 4. Activa el entorno virtual:
 
 - En Windows:
 
-  ```botDiscord\Scripts\activate```
+  ```nombre_del_entorno_virtual\Scripts\activate```
 
 
 - En macOS y Linux:
 
-  ```source botDiscord/bin/activate```
+  ```source nombre_del_entorno_virtual/bin/activate```
 
 5. Instala las dependencias del proyecto desde `requirements.txt`:
 
