@@ -40,7 +40,7 @@ Para instalar y ejecutar este bot localmente, sigue estos pasos:
 
 5. Instala las dependencias del proyecto desde `requirements.txt`:
 
-```pip install -r requirements.txt```
+  ```pip install -r requirements.txt```
 
 ## Uso
 
