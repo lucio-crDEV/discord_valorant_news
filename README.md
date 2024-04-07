@@ -16,7 +16,7 @@ Para instalar y ejecutar este bot localmente, sigue estos pasos:
 
 1. Clona este repositorio en tu máquina local:
 
-  ```git clone https://github.com/tu_usuario/bot-valorant-news.git  ```
+  ```git clone https://github.com/lucio-drDEV/bot-valorant-news.git  ```
 
 
 2. Accede al directorio del repositorio:
